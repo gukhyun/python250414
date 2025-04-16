@@ -20,14 +20,14 @@ for n in range(1,11):
         list = soup.find_all('span', attrs={'data-role':'list-title-text'})
 
 
-<td class="subject">
-<a href="/board/view.php?table=bestofbest&amp;no=479407&amp;s_no=479407&amp;page=2" target="_top">올해도 힙했다는 불교 박람회</a>
-<span class="list_memo_count_span"> [30]
-</span>  
-<span style="margin-left:4px;">
-<img src="http://www.todayhumor.co.kr/board/images/list_icon_photo.gif" style="vertical-align:middle; margin-bottom:1px;">
-</span><img src="http://www.todayhumor.co.kr/board/images/list_icon_shovel.gif?2" alt="펌글" style="margin-right:3px;top:2px;position:relative"> 
-</td>
+# <td class="subject">
+# <a href="/board/view.php?table=bestofbest&amp;no=479407&amp;s_no=479407&amp;page=2" target="_top">올해도 힙했다는 불교 박람회</a>
+# <span class="list_memo_count_span"> [30]
+# </span>  
+# <span style="margin-left:4px;">
+# <img src="http://www.todayhumor.co.kr/board/images/list_icon_photo.gif" style="vertical-align:middle; margin-bottom:1px;">
+# </span><img src="http://www.todayhumor.co.kr/board/images/list_icon_shovel.gif?2" alt="펌글" style="margin-right:3px;top:2px;position:relative"> 
+# </td>
 
 
 
