@@ -1,0 +1,32 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+import time
+
+# 네이버 로그인 정보
+loginID = "your_username"  # 네이버 아이디
+loginPW = "your_password"  # 네이버 비밀번호
+
+# Selenium WebDriver 실행
+driver = webdriver.Chrome()  # ChromeDriver가 PATH에 있어야 함
+driver.get('https://nid.naver.com/nidlogin.login')
+
+# 로그인 창에 아이디 입력
+id_input = driver.find_element(By.ID, "id")
+id_input.click()
+id_input.send_keys(loginID)
+
+# 비밀번호 입력
+pw_input = driver.find_element(By.ID, "pw")
+pw_input.click()
+pw_input.send_keys(loginPW)
+
+# 로그인 버튼 클릭
+login_button = driver.find_element(By.ID, "log.login")
+login_button.click()
+
+# 로그인 후 대기 (필요 시 추가 작업 가능)
+time.sleep(5)
+
+# 브라우저 종료 (테스트용)
+driver.quit()

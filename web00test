@@ -1,0 +1,51 @@
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+
+# URL 설정
+url = "https://www.melon.com/chart/index.htm"
+
+# HTTP 요청 헤더 설정 (멜론은 User-Agent가 필요할 수 있음)
+headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+}
+
+# HTTP 요청
+response = requests.get(url, headers=headers)
+
+# 응답 확인
+if response.status_code == 200:
+    print("웹페이지 로딩 성공!")
+    # HTML 파싱
+    soup = BeautifulSoup(response.text, 'html.parser')
+
+    # 순위, 제목, 아티스트 추출
+    ranks = [rank.text for rank in soup.select('div.wrap.t_center span.rank')]
+    titles = [title.text.strip() for title in soup.select('div.ellipsis.rank01 a')]
+    artists = [artist.text.strip() for artist in soup.select('div.ellipsis.rank02 a')]
+
+    # 리스트 길이 확인
+    print(f"순위 개수: {len(ranks)}, 제목 개수: {len(titles)}, 아티스트 개수: {len(artists)}")
+
+    # 리스트 길이를 맞추기 위해 최소 길이로 자르기
+    min_length = min(len(ranks), len(titles), len(artists))
+    ranks = ranks[:min_length]
+    titles = titles[:min_length]
+    artists = artists[:min_length]
+
+    # 데이터프레임 생성
+    data = {
+        "순위": ranks,
+        "제목": titles,
+        "아티스트": artists
+    }
+    df = pd.DataFrame(data)
+
+    # 결과 출력
+    print(df)
+
+    # CSV 파일로 저장
+    df.to_csv("melon_chart.csv", index=False, encoding='utf-8-sig')
+    print("멜론 차트 데이터를 'melon_chart.csv' 파일로 저장했습니다.")
+else:
+    print(f"웹페이지 로딩 실패. 상태 코드: {response.status_code}")

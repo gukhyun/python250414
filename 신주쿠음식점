@@ -1,0 +1,56 @@
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+import time
+import pandas as pd
+
+# ChromeDriver 경로 설정 (절대 경로로 수정)
+driver_path = r"C:\Program Files\Google\Chrome\Application\chrome.exe"  # ChromeDriver 파일의 절대 경로
+service = Service(driver_path)  # Service 객체 생성
+driver = webdriver.Chrome(service=service)  # Service 객체를 전달하여 WebDriver 생성
+
+# 구글맵 URL
+url = "https://www.google.com/maps"
+
+# 구글맵 열기
+driver.get(url)
+time.sleep(3)
+
+# 검색창에 "신주쿠 음식점 500m" 입력
+search_box = driver.find_element(By.ID, "searchboxinput")
+search_box.send_keys("신주쿠 음식점 500m")
+search_box.send_keys(Keys.RETURN)
+time.sleep(5)
+
+# 음식점 정보 수집
+restaurants = []
+for _ in range(5):  # 스크롤을 5번 내림
+    driver.execute_script("window.scrollBy(0, 1000);")
+    time.sleep(2)
+
+# 음식점 리스트 가져오기
+items = driver.find_elements(By.CLASS_NAME, "Nv2PK")
+
+for item in items:
+    try:
+        name = item.find_element(By.CLASS_NAME, "qBF1Pd").text  # 음식점 이름
+        category = item.find_element(By.CLASS_NAME, "W4Efsd").text  # 음식점 종류
+        link = item.find_element(By.TAG_NAME, "a").get_attribute("href")  # 음식점 링크
+        restaurants.append({"이름": name, "종류": category, "링크": link})
+    except Exception as e:
+        print(f"오류 발생: {e}")
+        continue
+
+# 데이터프레임 생성
+df = pd.DataFrame(restaurants)
+
+# 결과 출력
+print(df)
+
+# CSV 파일로 저장
+df.to_csv("신주쿠_음식점_500m.csv", index=False, encoding="utf-8-sig")
+print("신주쿠 음식점 데이터를 '신주쿠_음식점_500m.csv' 파일로 저장했습니다.")
+
+# 브라우저 닫기
+driver.quit()
