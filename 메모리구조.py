@@ -16,3 +16,4 @@ s.a = 30
 print("SuperClass:", SuperClass.__dict__)
 print("SubClass:", SubClass.__dict__)
 print("s:", s.__dict__)
+print("aaa")
